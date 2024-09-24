@@ -1,0 +1,181 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+<title>basic :: Layout Test</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;700&display=swap">
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<style>
+body, h1, h2, h3, h4, h5, h6, p, ul, ol, table, dl, dd {
+	margin: 0;
+	padding: 0;
+}
+h1 {
+	font-size: 16px;
+}
+a {
+	text-decoration: none;
+	color: #000;
+}
+ul, ol {
+	list-style: none;
+}
+img {
+	max-width: 100%;
+	vertical-align: top;
+	border: none;
+}
+body {
+	margin: 20px;
+	padding: 20px;
+	line-height: 1;
+	font-family: "Open Sans", sans-serif;
+	font-size: 1em;
+	background-color: #555;
+	color: #000;
+}
+/* main slider */
+.main_slider {
+	position: relative;
+	width: 740px;
+	height: 610px;
+}
+.main_slider .controller {
+	display: flex;
+	position: absolute;
+	left: 84px;
+	bottom: 84px;
+	z-index: 100;
+}
+.main_slider .controller a {
+	width: 38px;
+	height: 38px;
+	overflow: hidden;
+	text-indent: -9999px;
+	border: 1px solid rgba(255,255,255,.3);
+	border-left: none;
+}
+.main_slider .controller a:first-child {
+	border-left: 1px solid rgba(255,255,255,.3);
+}
+.main_slider .controller a.prev {
+	background: url(images/btn_left_arrow.png) no-repeat;
+}
+.main_slider .controller a.next {
+	background: url(images/btn_right_arrow.png) no-repeat;
+}
+#pause_play.pause {
+	background: url(images/btn_pause.png) no-repeat 0 0;
+}
+#pause_play.play {
+	background: url(images/btn_play.png) no-repeat 0 0;
+}
+.main_slider .account {
+	position: absolute;
+	left: 220px;
+	bottom: 98px;
+	z-index: 100;
+	font-size: 0.875em;
+	font-weight: 300;
+	color: #fff;
+	pointer-events: none;
+}
+.main_slider .account .current {
+	font-weight: 600;
+}
+
+</style>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+<script>
+    $(function(){
+        const swiper = new Swiper(".swiper-container", {
+            effect: "fade", // 불투명도 변경
+            fadeEffect: {
+                crossFade: true // fade 효과와 같이 사용되는 기능
+            },
+            loop: true,
+			autoplay: {
+         delay: 2000
+      },
+           
+			on:{
+		init:function(){
+			//this는 현재 Swiper를 의미합니다.
+			//realIndex:현재번호
+			//slides.lebgth:전체슬라이드길이
+			//console.log(this.realIndex, this.slides.length);
+			$(".account .current").text(this.realIndex + 1);
+			$(".account .total").text(this.slides.length);
+		},
+		slideChange:function(){
+			console.log(this.realIndex);
+			$(".account .current").text(this.realIndex + 1);
+		}
+	  }
+   });
+
+        // 이전 버튼 클릭 이벤트
+        $(".main_slider .prev").click(function(e){
+            e.preventDefault();
+            swiper.slidePrev(); // mainSwiper 대신 swiper 사용
+        });
+
+        // 다음 버튼 클릭 이벤트
+        $(".main_slider .next").click(function(e){
+            e.preventDefault();
+            swiper.slideNext(); // mainSwiper 대신 swiper 사용
+        });
+
+        // 재생/정지 버튼 클릭 이벤트
+        $("#pause_play").click(function(e){
+            e.preventDefault();
+
+            if (swiper.autoplay.running) {
+                // 자동 재생이 작동 중이면 정지
+                console.log("Autoplay stopped");
+                $(this).removeAttr("class").addClass("play"); // 아이콘을 play로 변경
+                swiper.autoplay.stop(); 
+            } else {
+                // 자동 재생이 정지 중이면 재생
+                console.log("Autoplay started");
+                $(this).removeAttr("class").addClass("pause"); // 아이콘을 pause로 변경
+                swiper.autoplay.start();
+            }
+        });
+    });
+</script>
+    </script>
+</head>
+
+<body>
+<h1 class="title">basic :: Layout Test</h1>
+<div class="container">
+	<div class="main_slider">
+		<div class="swiper-container mainSwiper">
+			<div class="swiper-wrapper">
+				<div class="swiper-slide"><img src="images/slider1.jpg" alt="image1"></div>
+				<div class="swiper-slide"><img src="images/slider2.jpg" alt="image2"></div>
+				<div class="swiper-slide"><img src="images/slider3.jpg" alt="image3"></div>
+				<div class="swiper-slide"><img src="images/slider4.jpg" alt="image4"></div>
+				<div class="swiper-slide"><img src="images/slider5.jpg" alt="image5"></div>
+				<div class="swiper-slide"><img src="images/slider6.jpg" alt="image6"></div>
+				<div class="swiper-slide"><img src="images/slider7.jpg" alt="image7"></div>
+				<div class="swiper-slide"><img src="images/slider8.jpg" alt="image8"></div>
+			</div>
+			</div>
+			<div class="controller">
+				<a href="" class="prev">previous</a>
+				<a href="" class="next">next</a>
+				<a href="" id="pause_play" class="pause">pause</a>
+			</div>
+			<div class="account">
+				<span class="current">1</span> / <span class="total">8</span>
+			</div>
+		</div>
+	</div>
+	</body>
+	</html>
